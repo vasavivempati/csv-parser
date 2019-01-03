@@ -13,7 +13,9 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.TimeZone;
 import java.util.Date;
+import java.time.ZoneOffset;
 import static java.text.Normalizer.Form.NFD;
+import java.time.ZonedDateTime;
 
 public class ReadInput {
     ArrayList<String[]> outputContainer = new ArrayList<String[]>();
@@ -59,7 +61,7 @@ public class ReadInput {
     }
     public void rowProcessor(String[] column ){
         SimpleDateFormat sdf = new SimpleDateFormat("d MMMM YYYY");
-        formattedOutputContainer.add(sdf.format(normalizeTimestamp(column[0])));
+        formattedOutputContainer.add(normalizeTimestamp(column[0]));
         formattedOutputContainer.add(normalizeAddress(column[1]));
         formattedOutputContainer.add( normalizeZipCode(column[2]));
         formattedOutputContainer.add(normalizeFullName(column[3]));
@@ -69,11 +71,39 @@ public class ReadInput {
         formattedOutputContainer.add(normalizeNotes(column[7]));
         full.add(formattedOutputContainer);
     }
-    private LocalDateTime normalizeTimestamp(String inputDate){
+    private String normalizeTimestamp(String inputDate){
+  //      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+ //       sdf.format(inputDate);
 
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        LocalDateTime localDateTime = LocalDateTime.parse(inputDate, format);
-        return localDateTime;
+//        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+//        LocalDateTime localDateTime = LocalDateTime.parse(inputDate, format);
+//        return localDateTime;
+        DateFormat outputFormat = new SimpleDateFormat("MM/yyyy", Locale.US);
+ //       DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.US);
+
+        DateFormat inputFormat = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss", Locale.US);
+        try
+        {
+            Date date = inputFormat.parse(inputDate);
+            String outputText = outputFormat.format(date);
+        }
+       catch(ParseException e){
+            System.out.println(e);
+       }
+
+
+        String offsetString = "-08:00";
+        //ZonedDateTime d = ZonedDateTime.parse(inputDate);
+//        LocalDateTime dateTime = LocalDateTime.parse(inputDate,
+//                DateTimeFormatter.ofPattern("MM/dd/uuuu hh:mm:ssa"));
+//        ZoneOffset offset = ZoneOffset.of(offsetString);
+//        String formattedTimestamp = dateTime.atOffset(offset).toString();
+        //return formattedTimestamp;
+
+        //DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        //final ZonedDateTime parsed = ZonedDateTime.parse(inputDate, formatter);
+
+        return offsetString;
     }
     private String normalizeAddress(String inputAddress){
          return Normalizer.normalize(inputAddress,NFD);
