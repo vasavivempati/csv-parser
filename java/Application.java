@@ -27,24 +27,17 @@ public class Application {
         }
         if(file.exists()) {
             try {
-                //FileReader file = new FileReader(name);
                 BufferedReader br=new BufferedReader(new FileReader(name));
-                ////BufferedWriter writer = new BufferedWriter(new FileWriter("output.csv"));
                 FileWriter outputFile = new FileWriter("output.csv");
                 CSVWriter fileWriter = new CSVWriter(outputFile);
-                //ArrayList<String[]> data = new ArrayList<>();
                 int first_row =0;
                 while((line =br.readLine())!=null){
-                    //System.out.println(line);
-                    //processor.addData(line);
                     if(first_row>0)
                     {
-                        //String[] split = line.split(",");
                         String[] split = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                         processor.addData(split);
                     }
                     first_row++;
-                    //fileWriter.writeNext(split);
                 }
                 processor.dataProcessor();
                 for (ArrayList<String> row: processor.getFull()) {
