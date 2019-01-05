@@ -21,14 +21,14 @@ dependencies {
     testCompile(
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
             'com.opencsv:opencsv:3.3',
-            compile ("com.opencsv:opencsv:4.0"),
-            compile (group: 'au.com.bytecode', name: 'opencsv', version: '2.4')
+            compile("com.opencsv:opencsv:4.0"),
+            compile(group: 'au.com.bytecode', name: 'opencsv', version: '2.4')
 
 
     )
     testRuntime(
-            compile ("com.opencsv:opencsv:4.0"),
-            compile (group: 'au.com.bytecode', name: 'opencsv', version: '2.4'),
+            compile("com.opencsv:opencsv:4.0"),
+            compile(group: 'au.com.bytecode', name: 'opencsv', version: '2.4'),
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
             'org.junit.vintage:junit-vintage-engine:5.1.0',
             'org.junit.platform:junit-platform-launcher:1.1.0',
