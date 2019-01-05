@@ -30,21 +30,32 @@ public class ReadInput {
     public ArrayList<String[]> getOutputContainer(){
         return outputContainer;
     }
-    public long getFooDuration()
-    {
+    public void setOutputContainer(ArrayList<String[]> outputContainerIn){
+        this.outputContainer = outputContainerIn;
+    }
+    public long getFooDuration() {
         return fooDuration;
     }
-    public long getBarDuration()
-    {
+    public void setFooDuration(long fooDurationIn){
+        this.fooDuration = fooDurationIn;
+    }
+    public long getBarDuration() {
         return barDuration;
     }
-    public long getTotalDurationDuration()
-    {
+    public void setBarDuration(long barDurationIn){
+        this.barDuration = barDurationIn;
+    }
+    public long getTotalDuration() {
         return totalDuration;
     }
-    public  ArrayList<ArrayList<String>> getFull()
-    {
+    public void setTotalDuration(long totalDuration){
+        this.totalDuration = totalDuration;
+    }
+    public  ArrayList<ArrayList<String>> getFull() {
         return full;
+    }
+    public void setFull(ArrayList<ArrayList<String>> fullIn){
+        this.full = fullIn;
     }
     //call timestamp
     // call zip_code
@@ -72,7 +83,7 @@ public class ReadInput {
         full.add(formattedOutputContainer);
     }
     private String normalizeTimestamp(String inputDate){
-        DateFormat outputFormat = new SimpleDateFormat("MM/yyyy", Locale.US);
+        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US);
         DateFormat inputFormat = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss", Locale.US);
         String outputText = "";
         try
