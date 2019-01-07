@@ -123,10 +123,7 @@ public class ReadInput {
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             Date time = sdf.parse(fooDurationInput);
             Long timeInMilliseconds = time.getTime();
-            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue()/1000L;
-//            DateFormat dateFormat = new SimpleDateFormat("HH:MM:SS.MS");
-//            Date date = dateFormat.parse((String.valueOf(fooDurationInput)));
-//            fooDuration = date.getTime() / 1000L;
+            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue() / 1000L;
             this.setFooDuration(timeInFloatingPointSeconds);
             return timeInFloatingPointSeconds;
         } catch (ParseException e) {
@@ -142,11 +139,7 @@ public class ReadInput {
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             Date time = sdf.parse(barDurationInput);
             Long timeInMilliseconds = time.getTime();
-            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue()/1000L;
-//            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-//            dateFormat.setTimeZone(TimeZone.getTimeZone("PST"));
-//            Date date = dateFormat.parse((String.valueOf(barDurationInput)));
-//            barDuration = date.getTime() / 1000L;
+            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue() / 1000L;
             this.setBarDuration(timeInFloatingPointSeconds);
             return timeInFloatingPointSeconds;
         } catch (ParseException e) {

@@ -37,7 +37,7 @@ public class Application {
                 int first_row = 0;
                 while ((line = br.readLine()) != null) {
                     if (first_row > 0) {
-                        String[] split = line.split(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))",-1);
+                        String[] split = line.split(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))", -1);
                         List<String> fields = Arrays.stream(split).map(field -> field.replace("\"", "").trim()).collect(Collectors.toList());
                         processor.addData(fields);
                     }
