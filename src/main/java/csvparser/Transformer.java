@@ -11,7 +11,7 @@ import java.util.*;
 
 import static java.text.Normalizer.Form.NFD;
 
-public class ReadInput {
+public class Transformer {
     ArrayList<List<String>> outputContainer = new ArrayList<>();
     ArrayList<ArrayList<String>> full = new ArrayList<ArrayList<String>>();
     float fooDuration = 0;
@@ -20,6 +20,7 @@ public class ReadInput {
 
     public void addData(List<String> input) throws IOException {
         outputContainer.add(input);
+        setOutputContainer(outputContainer);
     }
 
     public ArrayList<List<String>> getOutputContainer() {
@@ -70,13 +71,15 @@ public class ReadInput {
     // call TotalDuration
     // call Notes
     //using output container gotta normalize the data
-    public void dataProcessor() {
-        for (List<String> row : outputContainer) {
-            rowProcessor(row);
+    public ArrayList<List<String>> dataProcessor(ArrayList<List<String>> input) {
+        ArrayList<List<String>> output = new ArrayList<>();
+        for (List<String> row : input) {
+            output.add(rowProcessor(row));
         }
+        return output;
     }
 
-    public void rowProcessor(List<String> column) {
+    public ArrayList<String> rowProcessor(List<String> column) {
         ArrayList<String> formattedOutputContainer = new ArrayList<String>();
         formattedOutputContainer.add(normalizeTimestamp(column.get(0)));
         formattedOutputContainer.add(normalizeAddress(column.get(1)));
@@ -87,6 +90,8 @@ public class ReadInput {
         formattedOutputContainer.add(Float.toString(normalizeTotalDuration()));
         formattedOutputContainer.add(normalizeNotes(column.get(7)));
         full.add(formattedOutputContainer);
+        this.setFull(full);
+        return formattedOutputContainer;
     }
 
     private String normalizeTimestamp(String inputDate) {

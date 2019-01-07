@@ -9,43 +9,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReadFile {
-    public void readInFile(File inputFile, String name){
+    public ArrayList<List<String>> readInFile(File inputFile) {
         if (!inputFile.exists()) {
             System.out.println("File doesn't exist");
 
         }
         String line;
-        ReadInput processor = new ReadInput();
+        ArrayList<List<String>> inputContainer = new ArrayList<>();
         if (inputFile.exists()) {
             try {
-                BufferedReader br = new BufferedReader(new FileReader(name));
-                FileWriter outputFile = new FileWriter("output.csv");
-                CSVWriter fileWriter = new CSVWriter(outputFile);
+                BufferedReader br = new BufferedReader(new FileReader(inputFile.getName()));
                 int first_row = 0;
                 while ((line = br.readLine()) != null) {
                     if (first_row > 0) {
                         String[] split = line.split(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))", -1);
                         List<String> fields = Arrays.stream(split).map(field -> field.replace("\"", "").trim()).collect(Collectors.toList());
-                        processor.addData(fields);
+                        inputContainer.add(fields);
                     }
                     first_row++;
                 }
-                processor.dataProcessor();
-                for (ArrayList<String> row : processor.getFull()) {
-                    String[] rowIn = new String[row.size()];
-                    int i = 0;
-                    for (String item : row) {
-                        rowIn[i] = item;
-                        i++;
-                    }
-                    fileWriter.writeNext(rowIn);
-                }
-
-                fileWriter.close();
                 br.close();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
+        return inputContainer;
     }
 }
