@@ -1,8 +1,13 @@
+package csvparser;
+
 import com.opencsv.CSVWriter;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Created by vasavivempati on 12/27/18.
@@ -32,8 +37,10 @@ public class Application {
                 int first_row = 0;
                 while ((line = br.readLine()) != null) {
                     if (first_row > 0) {
-                        String[] split = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                        processor.addData(split);
+                        //String[] split = line.split("(,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$))", -1);
+                        String[] split = line.split(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))",-1);
+                        List<String> fields = Arrays.stream(split).map(field -> field.replace("\"", "").trim()).collect(Collectors.toList());
+                        processor.addData(fields);
                     }
                     first_row++;
                 }
