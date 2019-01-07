@@ -87,14 +87,14 @@ public class Transformer {
         formattedOutputContainer.add(normalizeFullName(column.get(3)));
         formattedOutputContainer.add(Float.toString(normalizeFooDuration(column.get(4))));
         formattedOutputContainer.add(Float.toString(normalizeBarDuration(column.get(5))));
-        formattedOutputContainer.add(Float.toString(normalizeTotalDuration()));
+        formattedOutputContainer.add(Float.toString(normalizeTotalDuration(this.getFooDuration(),this.getBarDuration())));
         formattedOutputContainer.add(normalizeNotes(column.get(7)));
         full.add(formattedOutputContainer);
         this.setFull(full);
         return formattedOutputContainer;
     }
 
-    private String normalizeTimestamp(String inputDate) {
+    public String normalizeTimestamp(String inputDate) {
         DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US);
         DateFormat inputFormat = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss", Locale.US);
         inputFormat.setTimeZone(TimeZone.getTimeZone("UTC-4"));
@@ -108,21 +108,21 @@ public class Transformer {
         return outputText;
     }
 
-    private String normalizeAddress(String inputAddress) {
+    public String normalizeAddress(String inputAddress) {
         return Normalizer.normalize(inputAddress, NFD);
     }
 
-    private String normalizeZipCode(String zipCode) {
+    public String normalizeZipCode(String zipCode) {
         while (zipCode.length() < 5)
             zipCode = "0" + zipCode;
         return zipCode;
     }
 
-    private String normalizeFullName(String fullName) {
+    public String normalizeFullName(String fullName) {
         return fullName.toUpperCase(Locale.ENGLISH);
     }
 
-    private float normalizeFooDuration(String fooDurationInput) {
+    public float normalizeFooDuration(String fooDurationInput) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -138,7 +138,7 @@ public class Transformer {
 
     }
 
-    private float normalizeBarDuration(String barDurationInput) {
+    public float normalizeBarDuration(String barDurationInput) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -153,12 +153,12 @@ public class Transformer {
         return barDuration;
     }
 
-    private float normalizeTotalDuration() {
-        totalDuration = this.getFooDuration() + this.getBarDuration();
+    public float normalizeTotalDuration(float fooDuration, float barDuration) {
+        totalDuration = fooDuration + barDuration;
         return totalDuration;
     }
 
-    private String normalizeNotes(String normalizeNotes) {
+    public String normalizeNotes(String normalizeNotes) {
         return Normalizer.normalize(normalizeNotes, NFD);
     }
 }
