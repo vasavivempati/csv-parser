@@ -14,9 +14,9 @@ import static java.text.Normalizer.Form.NFD;
 public class ReadInput {
     ArrayList<List<String>> outputContainer = new ArrayList<>();
     ArrayList<ArrayList<String>> full = new ArrayList<ArrayList<String>>();
-    long fooDuration = 0;
-    long barDuration = 0;
-    long totalDuration = 0;
+    float fooDuration = 0;
+    float barDuration = 0;
+    float totalDuration = 0;
 
     public void addData(List<String> input) throws IOException {
         outputContainer.add(input);
@@ -30,23 +30,23 @@ public class ReadInput {
         this.outputContainer = outputContainerIn;
     }
 
-    public long getFooDuration() {
+    public float getFooDuration() {
         return fooDuration;
     }
 
-    public void setFooDuration(long fooDurationIn) {
+    public void setFooDuration(float fooDurationIn) {
         this.fooDuration = fooDurationIn;
     }
 
-    public long getBarDuration() {
+    public float getBarDuration() {
         return barDuration;
     }
 
-    public void setBarDuration(long barDurationIn) {
+    public void setBarDuration(float barDurationIn) {
         this.barDuration = barDurationIn;
     }
 
-    public long getTotalDuration() {
+    public float getTotalDuration() {
         return totalDuration;
     }
 
@@ -78,14 +78,13 @@ public class ReadInput {
 
     public void rowProcessor(List<String> column) {
         ArrayList<String> formattedOutputContainer = new ArrayList<String>();
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM YYYY");
         formattedOutputContainer.add(normalizeTimestamp(column.get(0)));
         formattedOutputContainer.add(normalizeAddress(column.get(1)));
         formattedOutputContainer.add(normalizeZipCode(column.get(2)));
         formattedOutputContainer.add(normalizeFullName(column.get(3)));
-        formattedOutputContainer.add(Long.toString(normalizeFooDuration(column.get(4))));
-        formattedOutputContainer.add(Long.toString(normalizeBarDuration(column.get(5))));
-        formattedOutputContainer.add(Long.toString(normalizeTotalDuration()));
+        formattedOutputContainer.add(Float.toString(normalizeFooDuration(column.get(4))));
+        formattedOutputContainer.add(Float.toString(normalizeBarDuration(column.get(5))));
+        formattedOutputContainer.add(Float.toString(normalizeTotalDuration()));
         formattedOutputContainer.add(normalizeNotes(column.get(7)));
         full.add(formattedOutputContainer);
     }
@@ -118,13 +117,18 @@ public class ReadInput {
         return fullName.toUpperCase(Locale.ENGLISH);
     }
 
-    private long normalizeFooDuration(String fooDurationInput) {
+    private float normalizeFooDuration(String fooDurationInput) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("PST"));
-            Date date = dateFormat.parse((String.valueOf(fooDurationInput)));
-            fooDuration = date.getTime() / 1000L;
-            return fooDuration;
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date time = sdf.parse(fooDurationInput);
+            Long timeInMilliseconds = time.getTime();
+            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue()/1000L;
+//            DateFormat dateFormat = new SimpleDateFormat("HH:MM:SS.MS");
+//            Date date = dateFormat.parse((String.valueOf(fooDurationInput)));
+//            fooDuration = date.getTime() / 1000L;
+            this.setFooDuration(timeInFloatingPointSeconds);
+            return timeInFloatingPointSeconds;
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
@@ -132,21 +136,27 @@ public class ReadInput {
 
     }
 
-    private long normalizeBarDuration(String barDurationInput) {
+    private float normalizeBarDuration(String barDurationInput) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("PST"));
-            Date date = dateFormat.parse((String.valueOf(barDurationInput)));
-            barDuration = date.getTime() / 1000L;
-            return barDuration;
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date time = sdf.parse(barDurationInput);
+            Long timeInMilliseconds = time.getTime();
+            Float timeInFloatingPointSeconds = timeInMilliseconds.floatValue()/1000L;
+//            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//            dateFormat.setTimeZone(TimeZone.getTimeZone("PST"));
+//            Date date = dateFormat.parse((String.valueOf(barDurationInput)));
+//            barDuration = date.getTime() / 1000L;
+            this.setBarDuration(timeInFloatingPointSeconds);
+            return timeInFloatingPointSeconds;
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
         return barDuration;
     }
 
-    private long normalizeTotalDuration() {
-        totalDuration = fooDuration + barDuration;
+    private float normalizeTotalDuration() {
+        totalDuration = this.getFooDuration() + this.getBarDuration();
         return totalDuration;
     }
 
